@@ -4,12 +4,33 @@
 // http://www.no-carrier.com
 // Have fun! :)
 
+// Thanks, I will!
+// This fork adds the option to limit colours to a CGA-style 16-colour palette.
+
 PFont font;       // textmode font
 PGraphics b;      // screen buffer
 PImage img;       // used for face.png
+boolean CGA = true; //draw using only CGA-style 16-colour palette
+color[] CGApalette = new color[16];
+int[] CGApaletteRGB = { 0,   0,   0,   //black
+                        170, 0,   0,   //red 
+                        0,   170, 0,   //green
+                        170, 85,  0,   //brown
+                        0,   0,   170, //blue
+                        170, 0,   170, //magenta
+                        0,   170, 170, //cyan
+                        170, 170, 170, //grey
+                        85,  85,  85,  //dark grey
+                        255, 85,  85,  //bright red
+                        85,  255, 85,  //bright green
+                        255, 255, 85,  //yellow
+                        85,  85,  255, //bright blue
+                        255, 85,  255, //bright magenta
+                        85,  255, 255, //cyan
+                        255, 255, 255 };//white
 
 int segSize;      // segment size, see renderTextMode tab for (lots) more detail 
-int display = 1;  // choose which demo to display, starts with face image
+int display = 3;  // choose which demo to display, starts with face image
 float tick;       // counter, used for sin calcuations for shape rotation
 
 boolean doDraw = true;      // draw or pause
@@ -23,6 +44,9 @@ void setup() {
   noSmooth();               // keep it blocky :)
   noCursor();               // don't need this!
   initTextmode();           // set up buffer, load font for textmode output
+  for (int i=0; i<16; i++) {
+    CGApalette[i] = color(CGApaletteRGB[i*3], CGApaletteRGB[i*3+1], CGApaletteRGB[i*3+2]); //create palette from RGB values
+  }
 }
 
 void draw() {

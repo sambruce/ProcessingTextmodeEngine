@@ -77,10 +77,23 @@ void renderTextMode() {
       float sr = (allR / (segSize * segSize) );     // sr, sg, and sb hold the average amount of
       float sg = (allG / (segSize * segSize) );     // red, green, and blue in each 4x4px segment.
       float sb = (allB / (segSize * segSize) );     
-
-      fill(sr, sg, sb);                             // finally we assign a fill color for our glyph
+      
+      if (CGA) { 
+        //find closest color in CGA palette
+        int closestColor = 0;
+        float minColorDiff = 9999;
+        for (int i=0; i<16; i++) {
+          float diff = abs(sr - (float)red(CGApalette[i])) + abs(sg - (float)green(CGApalette[i])) + abs(sb - (float)blue(CGApalette[i]));
+          if (diff < minColorDiff) {
+            minColorDiff = diff;
+            closestColor = i;
+          }
+        }
+        fill(CGApalette[closestColor]);
+      } else {
+        fill(sr, sg, sb);                           // finally we assign a fill color for our glyph
       // based on the average RGB values calculated above.
-
+      }
       float segb = (allBri / (segSize * segSize) ); // just like above, we get the average brightness
       // of each 4x4 pixel segment and average it.
 
